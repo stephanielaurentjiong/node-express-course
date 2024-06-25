@@ -1,0 +1,6 @@
+/node_modules  
+.DS_Store  
+temp.txt
+
+# node_modules will not be on Github because everyone can access is by npm.
+# DS_Store is created by Mac OS, no need on GitHub
