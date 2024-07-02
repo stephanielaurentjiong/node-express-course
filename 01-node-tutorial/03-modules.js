@@ -7,3 +7,6 @@ require('./07-mind-grenade')
 sayHi('susan')
 sayHi(names.john)
 sayHi(names.peter)
+console.log(names)
+console.log(data)
+
