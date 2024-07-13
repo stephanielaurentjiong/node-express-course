@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 let { people } = require('../data');
 
-const addPerson = (req, res) => {
+const getPeople = (req, res) => {
     res.json(people);
 }
 
@@ -11,17 +11,18 @@ const findPersonById = (req, res) => {
     // req.params is for capture route parameters from the URL path. It is defined in the route path using colon (:) followed by a parameter name (:parameter).
     // req.body is to receive data from post put patch
 
-    const { name } = req.params //a string
+    // const { name } = req.params //a string
+    const personId = req.params.id
 
-    const person = people.find((person) => person.id === Number(id))
+    const person = people.find((person) => person.id === Number(personId))
 
     if(!person) {
-        return req.status(404).json({ success: false, message: `no person with id ${id}`})
+        return res.status(404).json({ success: false, message: `no person with id ${personId}`})
     }
     res.status(200).json({ success: true, data: person})
 }
 
-const getPeople = (req, res) => {
+const addPerson = (req, res) => {
     const {name} = req.body;
     if(!name) {
         return res.status(400).json({ success: false, message: "Please provide a name" });
@@ -34,7 +35,7 @@ const getPeople = (req, res) => {
 
 const updatePerson = (req, res) => {
     const { id } = req.params
-    const { name } = req.params //a string
+    const { name } = req.body //a string
 
     const person = people.find((person) => person.id === Number(id))
 

@@ -61,9 +61,9 @@ app.get('/api/v1/query', (req, res) => {
         sortedProducts = sortedProducts.slice(0, Number(limit)) //get the sortedProduct's array, and slice the index start from index 0, until the limit number is requested
     }
     
-    if(price) {
+    if(minPrice) {
         sortedProducts = sortedProducts.filter((product) => {
-            return product.price <= Number(price);
+            return product.price <= Number(minPrice);
         })
     }
     res.status(200).json(sortedProducts)

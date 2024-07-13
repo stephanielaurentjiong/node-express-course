@@ -4,14 +4,14 @@ let { people } = require('../data');
 // Below line is for so that the route calls the controller function you create. 
 const { getPeople,  addPerson, findPersonById, updatePerson, deletePerson } = require("../controllers/people.js");
 
-router.get('/', getPeople)
+router.get('/', getPeople) //works
 
-router.get('/:id', findPersonById)
+router.get('/:id', findPersonById) //works
 
-router.post('/', addPerson)
+router.post('/', addPerson) //works
 
-router.put('/:id', updatePerson)
+router.put('/:id', updatePerson) //works
 
-router.delete('/:id', deletePerson)
+router.delete('/:id', deletePerson) //works
 
 module.exports = router
