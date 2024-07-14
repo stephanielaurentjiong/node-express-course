@@ -1,11 +1,25 @@
 const express = require('express')
 const app = express()
 const { products } = require('./data');
+const peopleRouter = require('./routes/people')
+
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
+app.use(express.static('./methods-public'))
+app.use('/api/v1/people', peopleRouter)
 
 // const fetchProductsBtn = document.getElementById('fetchProductsBtn');
 // const productListDiv = document.getElementById('productList');
 
-app.use(express.static('./public'))
+const logger = (req, res, next) => {
+    const method = req.method
+    const url = req.url
+    const time = new Date().getFullYear()
+    console.log(method, url, time)
+    next()
+  }
+
+app.use(logger)
 
 app.get('/api/v1/products', (req, res) => {
     res.json(products); // Assuming 'products' is your array of products
@@ -34,8 +48,6 @@ app.get('/api/v1/products/:productID', (req, res) => { //productID is a paramete
 
 app.get('/api/v1/query', (req, res) => {
     // console.log(req.query) // return {}
-
-
     const { search, limit, price } = req.query;
     let sortedProducts = [...products]; //created a copy of products n new copy of array is assgined to so sortedProducts
 
@@ -49,13 +61,37 @@ app.get('/api/v1/query', (req, res) => {
         sortedProducts = sortedProducts.slice(0, Number(limit)) //get the sortedProduct's array, and slice the index start from index 0, until the limit number is requested
     }
     
-    if(price) {
+    if(minPrice) {
         sortedProducts = sortedProducts.filter((product) => {
-            return product.price <= Number(price);
+            return product.price <= Number(minPrice);
         })
     }
     res.status(200).json(sortedProducts)
 })
+
+// app.get('/api/v1/people', (req, res) => {
+//     res.json(people)
+// })
+
+// app.post('/login', (req, res) => {
+//     const {name} = req.body;
+//     if(!name) {
+//         return res.status(400).json({ success: false, message: "Please provide a name" });
+//     }
+//     people.push({ id: people.length + 1, name: req.body.name})
+//     res.status(201).json({ success: true, name: req.body.name})
+// })
+
+// app.post('/api/v1/people', (req, res) => {
+//     const {name} = req.body;
+//     if(!name) {
+//         return res.status(400).json({ success: false, message: "Please provide a name" });
+//     }
+//     people.push({ id: people.length + 1, name: req.body.name})
+//     res.status(201).json({ success: true, name: req.body.name})
+//     // The HTTP status code 201 means that an object was created on the server side.
+// })
+
 
 app.all('*', (req, res) => {
     res.status(404).send('<h1>Not found</h1>')
